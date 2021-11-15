@@ -19,6 +19,24 @@ module BookStore
               present book, with: BookStore::Entities::Book
             end
 
+            desc 'Update a book'
+            params do
+              requires :book, type: Hash do
+                requires :isbn, type: Integer, desc: 'ISBN.'
+                requires :title, type: String, desc: 'Title.'
+                requires :stock, type: Integer, desc: 'Stock.'
+              end
+            end
+            put do
+              @book = Book.find(params[:id])
+              @book.update(params[:book])
+            end
+
+            desc 'Delete a book'
+            delete do
+              Book.find(params[:id]).destroy
+            end
+
             resource :flows do
               desc 'Create a flow'
               params do
